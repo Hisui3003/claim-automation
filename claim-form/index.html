@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trainee Allowance Claim Form</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+  <main class="app">
+    <section class="panel">
+      <div class="panel-header">
+        <h1>Trainee Allowance Claim</h1>
+        <p>Fill in the details, add time-card entries, then download a clean PDF copy.</p>
+      </div>
+
+      <div class="form-body">
+        <div class="section-title">Trainee Details</div>
+
+        <div class="field">
+          <label for="trainee">Trainee Name</label>
+          <input id="trainee" type="text" placeholder="Enter trainee name" />
+        </div>
+
+        <div class="field">
+          <label for="department">Department</label>
+          <input id="department" type="text" placeholder="Enter department" />
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label for="periodFrom">Period From</label>
+            <input id="periodFrom" type="date" />
+          </div>
+
+          <div class="field">
+            <label for="periodTo">Period To</label>
+            <input id="periodTo" type="date" />
+          </div>
+        </div>
+
+        <div class="section-title">Allowance Details</div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label for="dailyRate">Daily Rate</label>
+            <input id="dailyRate" type="number" value="695" min="0" step="0.01" />
+          </div>
+
+          <div class="field">
+            <label for="preparedBy">Prepared By</label>
+            <input id="preparedBy" type="text" placeholder="Name of trainee" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="checkedBy">Checked By</label>
+          <input id="checkedBy" type="text" placeholder="Name and signature" />
+        </div>
+
+        <div class="field">
+          <label for="approvedBy">Approved By</label>
+          <input id="approvedBy" type="text" placeholder="Department manager" />
+        </div>
+
+        <div class="section-title">Time Card Entries</div>
+
+        <div id="rowsContainer"></div>
+
+        <button class="btn-outline" type="button" onclick="addRow()">+ Add Entry</button>
+
+        <div class="actions">
+          <button class="btn-secondary" type="button" onclick="resetForm()">Reset</button>
+          <!-- <button class="btn-primary" type="button" onclick="downloadPDF()">Download PDF</button> -->
+        </div>
+      </div>
+    </section>
+
+    <section class="preview-wrap" id="previewWrap">
+      <div class="preview-toolbar">
+        <h2>Live Preview</h2>
+        <button class="btn-primary" type="button" onclick="downloadPDF()">Download Claim Form</button>
+      </div>
+
+      <div id="claimForm" class="claim-form">
+        <div class="company-header">
+          <div class="brand">
+            <img src="assets/logo.png" alt="Company logo" class="logo-mark" />
+            <div class="brand-text">
+              <h4>BRITISH EDUCATION, INC.</h4>
+              <p>Operating under the name and style of THE BRITISH SCHOOL MANILA</p>
+            </div>
+          </div>
+
+          <div class="company-info">
+            36th Street University Park, Bonifacio Global City<br />
+            1634 Taguig, Metro Manila, Philippines<br />
+            Tel: (632) 8860-4800<br />
+            E-mail: finance@britishschoolmanila.org<br />
+            Non-VAT Registered - TIN 003-507-398-000
+          </div>
+        </div>
+
+        <div class="form-title">TRAINEE ALLOWANCE CLAIM FORM</div>
+
+        <div class="info-lines">
+          <div class="info-line">
+            <div>TRAINEE:</div>
+            <div class="line-value" id="previewTrainee"></div>
+          </div>
+
+          <div class="info-line">
+            <div>DEPARTMENT:</div>
+            <div class="line-value" id="previewDepartment"></div>
+          </div>
+
+          <div class="period-grid">
+            <div>PERIOD OF CLAIM:</div>
+            <div class="line-value" id="previewFrom"></div>
+            <div style="text-align:center;">up to</div>
+            <div class="line-value" id="previewTo"></div>
+          </div>
+        </div>
+
+        <table class="claim-table">
+          <thead>
+            <tr>
+              <th style="width: 70px;" rowspan="2">No.</th>
+              <th style="width: 160px;" rowspan="2">Date</th>
+              <th colspan="2">Time Card</th>
+              <th style="width: 120px;" rowspan="2">No. of Hours</th>
+            </tr>
+            <tr>
+              <th style="width: 120px;">Time In</th>
+              <th style="width: 120px;">Time Out</th>
+            </tr>
+          </thead>
+          <tbody id="previewRows"></tbody>
+        </table>
+
+        <div class="summary">
+          <div class="summary-left">
+            <div class="summary-row">
+              <div>Total Hours</div>
+              <div class="summary-value" id="previewTotalHours">0.00</div>
+            </div>
+            <div class="summary-row">
+              <div>No. of Days</div>
+              <div class="summary-value" id="previewDays">0</div>
+            </div>
+
+            <div class="summary-row">
+              <div>Daily rate</div>
+              <div class="summary-value" id="previewRate">₱695.00</div>
+            </div>
+
+            <div class="summary-row">
+              <div>Daily claim</div>
+              <div class="summary-value" id="previewDailyClaim">₱0.00</div>
+            </div>
+          </div>
+
+          <div class="total-claim">
+            <div>Total claim:</div>
+            <div class="total-value" id="previewTotal">₱0.00</div>
+          </div>
+        </div>
+
+        <div class="signatures">
+          <div class="signature-block">
+            <div class="signature-label">Prepared by:</div>
+            <div class="signature-line" id="previewPreparedBy"></div>
+            <div class="signature-role">Trainee</div>
+            <div class="signature-role">Name and Signature</div>
+          </div>
+
+          <div class="signature-block">
+            <div class="signature-label">Checked by:</div>
+            <div class="signature-line" id="previewCheckedBy"></div>
+            <div class="signature-role">Name and Signature</div>
+          </div>
+
+          <div class="signature-block">
+            <div class="signature-label">Approved by:</div>
+            <div class="signature-line" id="previewApprovedBy"></div>
+            <div class="signature-role">Department Manager</div>
+            <div class="signature-role">Name and Signature</div>
+          </div>
+        </div>
+
+        <div class="version header-version">version June 2026</div>
+
+        
+      </div>
+    </section>
+  </main>
+
+  <!-- html2pdf CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>
