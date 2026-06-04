@@ -152,7 +152,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('previewDays').textContent = validDays;
     document.getElementById('previewRate').textContent = formatPeso(dailyRate);
-    document.getElementById('previewDailyClaim').textContent = formatPeso(totalClaim);
     document.getElementById('previewTotal').textContent = formatPeso(totalClaim);
     document.getElementById('previewTotalHours').textContent = totalHours.toFixed(2);
 

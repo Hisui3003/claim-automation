@@ -455,6 +455,24 @@ table {
   padding-right: 14px;
 }
 
+.table-total-hours {
+  display: grid;
+  grid-template-columns: 1fr 120px;
+  align-items: end;
+  gap: 12px;
+  width: 280px;
+  margin-left: auto;
+  margin-top: 8px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.table-total-hours-value {
+  border-bottom: 1px solid #000;
+  text-align: center;
+  font-weight: 700;
+}
+
 .summary {
   display: grid;
   grid-template-columns: 1fr 1fr;
