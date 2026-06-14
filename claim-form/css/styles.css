@@ -373,7 +373,7 @@ button {
 }
 
 .brand-text p {
-  color: var(--muted);
+  color: #666666;
   font-size: 13.5px;
   font-style: italic;
   margin-top: 2px;
