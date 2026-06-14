@@ -367,18 +367,18 @@ button {
 
 .brand-text h4 {
   color: #666666;
-  font-size: 18px;
+  font-size: 25px;
   letter-spacing: 0.7px;
   font-weight: 300;
 }
 
 .brand-text p {
   color: var(--muted);
-  font-size: 8px;
+  font-size: 13.5px;
   font-style: italic;
   margin-top: 2px;
   letter-spacing: 1.5px;
-  text-align: center;
+  /* text-align: center; */
 }
 
 .company-info {
