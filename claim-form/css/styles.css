@@ -20,6 +20,7 @@ body {
   min-height: 100vh;
   padding: 0;
   color: var(--text);
+  font-weight: 300;
   overflow: hidden;
   background:
     radial-gradient(circle at top left, rgba(255, 255, 255, 0.14), transparent 34%),
@@ -368,7 +369,7 @@ button {
   color: #666666;
   font-size: 18px;
   letter-spacing: 0.7px;
-  font-weight: 700;
+  font-weight: 300;
 }
 
 .brand-text p {
@@ -441,14 +442,14 @@ table {
 
 .claim-table th,
 .claim-table td {
-  border: 2px solid #000;
+  border: 1px solid #000;
   padding: 3px 6px;
   text-align: center;
   height: 22px;
 }
 
 .claim-table {
-  border: 2px solid #000;
+  border: 1px solid #000;
 }
 
 .claim-table thead tr:first-child th {
