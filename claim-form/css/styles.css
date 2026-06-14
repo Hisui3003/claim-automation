@@ -13,7 +13,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Myriad Pro', Verdana, Arial, sans-serif;
 }
 
 body {
@@ -364,7 +364,7 @@ button {
 }
 
 .brand-text h4 {
-  color: var(--navy);
+  color: #666666;
   font-size: 19px;
   letter-spacing: 1px;
   font-weight: 800;
@@ -379,7 +379,7 @@ button {
 
 .company-info {
   text-align: right;
-  color: var(--navy);
+  color: #666666;
   font-size: 9px;
   line-height: 1.35;
 }
