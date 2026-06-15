@@ -200,13 +200,13 @@ button {
 
 .btn-outline {
   width: 100%;
-  background: var(--white);
+  background: #64ff89;
   color: var(--navy);
   border: 1px solid var(--border);
 }
 
 .btn-outline:hover {
-  background: var(--light);
+  background: #3eff47;
 }
 
 .preview-wrap {

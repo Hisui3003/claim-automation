@@ -30,6 +30,28 @@ document.addEventListener('DOMContentLoaded', () => {
     return `${day}-${month}-${year} ${wd}`;
   }
 
+  function formatDayValue(value) {
+    const number = Number(value) || 0;
+
+    return number.toFixed(1).replace(/\.0$/, '');
+  }
+
+  function getNextDate(value) {
+    if (!value) return '';
+
+    const date = new Date(value + 'T00:00:00');
+
+    if (Number.isNaN(date.getTime())) return '';
+
+    date.setDate(date.getDate() + 1);
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+  }
+
   function calculateHours(timeIn, timeOut) {
     if (!timeIn || !timeOut) return 0;
 
@@ -38,9 +60,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (end <= start) return 0;
 
-    const diff = (end - start) / 1000 / 60 / 60;
+    return (end - start) / 1000 / 60 / 60;
+  }
 
-    return diff;
+  function calculateDayUnit(timeIn, timeOut) {
+    if (!timeIn || !timeOut) return '';
+
+    const hours = calculateHours(timeIn, timeOut);
+
+    if (hours >= 8) return 1;
+    if (hours >= 4) return 0.5;
+
+    return '';
   }
 
   function fitPreviewToViewport() {
@@ -62,11 +93,16 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function addRow(data = {}) {
+    const previousEntry = entries[entries.length - 1] || {};
+    const timeIn = data.timeIn || '06:00';
+    const timeOut = data.timeOut || '16:00';
+    const nextDate = data.date || getNextDate(previousEntry.date);
+
     entries.push({
-      date: data.date || '',
-      timeIn: data.timeIn || '',
-      timeOut: data.timeOut || '',
-      hours: data.hours || 0
+      date: nextDate,
+      timeIn,
+      timeOut,
+      dayUnit: data.dayUnit !== undefined ? data.dayUnit : calculateDayUnit(timeIn, timeOut)
     });
 
     renderInputs();
@@ -81,7 +117,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function updateEntry(index, field, value) {
     entries[index][field] = value;
-    entries[index].hours = calculateHours(entries[index].timeIn, entries[index].timeOut);
+
+    if (field === 'timeIn' || field === 'timeOut') {
+      entries[index].dayUnit = calculateDayUnit(entries[index].timeIn, entries[index].timeOut);
+    }
 
     renderInputs();
     updatePreview();
@@ -130,8 +169,8 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
 
         <div class="field">
-          <label>No. of Hours</label>
-          <input type="text" value="${entry.hours.toFixed(2)}" readonly />
+          <label>Day</label>
+          <input type="text" value="${entry.dayUnit === '' ? '' : formatDayValue(entry.dayUnit)}" readonly />
         </div>
       `;
 
@@ -146,14 +185,13 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('previewTo').textContent = formatDate(document.getElementById('periodTo').value);
 
     const dailyRate = Number(document.getElementById('dailyRate').value) || 0;
-    const validDays = entries.filter(entry => Number(entry.hours) > 0).length;
-    const totalClaim = validDays * dailyRate;
-    const totalHours = entries.reduce((sum, e) => sum + (Number(e.hours) || 0), 0);
+    const totalDays = entries.reduce((sum, entry) => sum + (Number(entry.dayUnit) || 0), 0);
+    const totalClaim = totalDays * dailyRate;
 
-    document.getElementById('previewDays').textContent = validDays;
+    document.getElementById('previewDays').textContent = formatDayValue(totalDays);
     document.getElementById('previewRate').textContent = formatPeso(dailyRate);
     document.getElementById('previewTotal').textContent = formatPeso(totalClaim);
-    document.getElementById('previewTotalHours').textContent = totalHours.toFixed(2);
+    document.getElementById('previewTotalHours').textContent = formatDayValue(totalDays);
 
     document.getElementById('previewPreparedBy').textContent = document.getElementById('preparedBy').value;
     document.getElementById('previewCheckedBy').textContent = document.getElementById('checkedBy').value;
@@ -168,7 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
         date: '',
         timeIn: '',
         timeOut: '',
-        hours: 0
+        dayUnit: ''
       };
 
       const row = document.createElement('tr');
@@ -178,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <td>${formatDate(entry.date)}</td>
         <td>${entry.timeIn || ''}</td>
         <td>${entry.timeOut || ''}</td>
-        <td class="hours-cell">${Number(entry.hours || 0).toFixed(2)}</td>
+        <td class="hours-cell">${entry.dayUnit === '' ? '' : formatDayValue(entry.dayUnit)}</td>
       `;
 
       previewRows.appendChild(row);
